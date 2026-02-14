@@ -60,7 +60,11 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *prtscrcmd[] = { "flameshot", "gui", NULL};
+static const char *prtscrcmd[] = { "flameshot", "gui", NULL };
+static const char *audiomutecmd[] = { "pulseaudio-ctl", "mute", NULL };
+static const char *audiomuteinputcmd[] = { "pulseaudio-ctl", "mute-input", NULL };
+static const char *audiovolupcmd[] = { "pulseaudio-ctl", "up", NULL };
+static const char *audiovoldowncmd[] = { "pulseaudio-ctl", "down", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -88,6 +92,10 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = prtscrcmd }, },
+	{ 0,                            XK_F1,     spawn,          {.v = audiomutecmd}, },  
+	{ 0,                            XK_F4,     spawn,          {.v = audiomuteinputcmd}, },  
+	{ 0,                            XK_F2,     spawn,          {.v = audiovoldowncmd}, },  
+	{ 0,                            XK_F3,     spawn,          {.v = audiovolupcmd}, },  
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
