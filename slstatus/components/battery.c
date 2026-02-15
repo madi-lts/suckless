@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "../slstatus.h"
 #include "../util.h"
@@ -50,6 +51,44 @@
 	}
 
 	const char *
+	battery_symbol(const char *bat) {
+		int perc; 
+		const char * state; 
+		state = battery_state(bat);
+		const char *perc_str = battery_perc(bat);
+		perc = atoi(perc_str);
+
+		char *bat_symb = "";
+		if (strcmp(state, "-") == 0) {
+			if (perc == 100) bat_symb = "\U000F0079";
+			if ((perc >= 90) && (perc < 100)) bat_symb = "\U000F0082";
+			if ((perc >= 80) && (perc < 90)) bat_symb = "\U000F0081";
+			if ((perc >= 70) && (perc < 80)) bat_symb = "\U000F0080";
+			if ((perc >= 60) && (perc < 70)) bat_symb = "\U000F007F";
+			if ((perc >= 50) && (perc < 60)) bat_symb = "\U000F007E";
+			if ((perc >= 40) && (perc < 50)) bat_symb = "\U000F007D";
+			if ((perc >= 30) && (perc < 40)) bat_symb = "\U000F007C";
+			if ((perc >= 20) && (perc < 30)) bat_symb = "\U000F007B";
+			if ((perc >= 10) && (perc < 20)) bat_symb = "\U000F007A";
+			if ((perc >= 0) && (perc < 10))  bat_symb = "\U000F008E";
+		}
+		if (strcmp(state, "+") == 0) {
+			if (perc == 100) bat_symb = "\U000F0084";
+			if ((perc >= 90) && (perc < 100)) bat_symb = "\U000F008B";
+			if ((perc >= 80) && (perc < 90)) bat_symb = "\U000F008A";
+			if ((perc >= 70) && (perc < 80)) bat_symb = "\U000F089E";
+			if ((perc >= 60) && (perc < 70)) bat_symb = "\U000F0089";
+			if ((perc >= 50) && (perc < 60)) bat_symb = "\U000F089D";
+			if ((perc >= 40) && (perc < 50)) bat_symb = "\U000F0088";
+			if ((perc >= 30) && (perc < 40)) bat_symb = "\U000F0087";
+			if ((perc >= 20) && (perc < 30)) bat_symb = "\U000F0086";
+			if ((perc >= 10) && (perc < 20)) bat_symb = "\U000F089C";
+			if ((perc >= 0) && (perc < 10))  bat_symb = "\U000F089F";
+		}
+		return bat_symb;
+	}
+
+	const char *
 	battery_state(const char *bat)
 	{
 		static struct {
@@ -68,6 +107,7 @@
 			return NULL;
 		if (pscanf(path, "%12[a-zA-Z ]", state) != 1)
 			return NULL;
+
 
 		for (i = 0; i < LEN(map); i++)
 			if (!strcmp(map[i].state, state))
